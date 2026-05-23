@@ -4,7 +4,7 @@ PrepWise is a production-grade, full-stack mock interview platform designed to h
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 *   **Secure Authentication**: JWT-based user register/login flow with encrypted password hashing.
 *   **Resume Skill Extraction**: Parses text from uploaded PDF resumes and automatically extracts matching tech stack badges (React, Node, Java, etc.) using `pdf-parse`.
@@ -15,7 +15,7 @@ PrepWise is a production-grade, full-stack mock interview platform designed to h
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 *   **Runtime**: Node.js & Express
@@ -34,7 +34,7 @@ PrepWise is a production-grade, full-stack mock interview platform designed to h
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 PrepWise/
@@ -67,7 +67,7 @@ PrepWise/
 
 ---
 
-## 🔌 API Documentation
+## API Documentation
 
 All protected routes require the header `Authorization: Bearer <your_jwt_token>`.
 
@@ -96,7 +96,7 @@ All protected routes require the header `Authorization: Bearer <your_jwt_token>`
 
 ---
 
-## ⚙️ Environment Configurations
+## Environment Configurations
 
 ### Backend Setup
 Create a `.env` file in the `backend/` folder:
@@ -109,7 +109,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key_here
 
 ---
 
-## ⚡ Local Run Guide
+## Local Run Guide
 
 Follow these steps to run the application in a local development environment.
 
