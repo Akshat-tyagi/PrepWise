@@ -16,6 +16,8 @@ export const startInterview = async (req, res) => {
     // Prompt for LLM
     const prompt = `
 Generate exactly 5 technical interview questions.
+Each question must be a short, direct, one-liner.
+Do not include scenarios, long descriptions, or multi-sentence prompts.
 Each question should be on a new line.
 Skills: ${skills}
 `;
@@ -30,13 +32,14 @@ Skills: ${skills}
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "stepfun/step-3.5-flash:free",
+          model: "google/gemini-3.5-flash",
           messages: [
             {
               role: "user",
               content: prompt,
             },
           ],
+          reasoning: { enabled: true },
         }),
       }
     );
@@ -51,10 +54,10 @@ Skills: ${skills}
 
     // Convert text → array
     const questions = questionsText
-    .split("\n")
-    .map(q => q.replace(/^\d+[\).\s]+/, "").trim())
-    .filter(q => q.length > 10)
-    .slice(0, 5);
+      .split("\n")
+      .map(q => q.replace(/^\d+[\).\s]+/, "").trim())
+      .filter(q => q.length > 10)
+      .slice(0, 5);
 
     // Safety fallback
     if (questions.length < 3) {
@@ -119,8 +122,9 @@ Feedback: short paragraph
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "stepfun/step-3.5-flash:free",
+          model: "google/gemini-3.5-flash",
           messages: [{ role: "user", content: prompt }],
+          reasoning: { enabled: true },
         }),
       }
     );
