@@ -22,7 +22,7 @@ Each question should be on a new line.
 Skills: ${skills}
 `;
 
-    // OpenRouter + StepFun (FREE)
+    // OpenRouter + Gemini 3.5 Flash
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -32,14 +32,15 @@ Skills: ${skills}
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-3.5-flash",
+          model: "google/gemini-2.5-flash",
           messages: [
             {
               role: "user",
               content: prompt,
             },
           ],
-          reasoning: { enabled: true },
+          max_tokens: 1000,
+          temperature: 0.7,
         }),
       }
     );
@@ -47,7 +48,8 @@ Skills: ${skills}
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]) {
-      throw new Error("Invalid response from LLM");
+      console.error("OpenRouter API error in startInterview:", JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || "Invalid response from LLM");
     }
 
     const questionsText = data.choices[0].message.content;
@@ -78,8 +80,8 @@ Skills: ${skills}
       questions,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error("Error in startInterview:", err);
+    res.status(500).json({ message: "Failed to generate interview questions. Please try again." });
   }
 };
 
@@ -122,14 +124,21 @@ Feedback: short paragraph
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-3.5-flash",
+          model: "google/gemini-2.5-flash",
           messages: [{ role: "user", content: prompt }],
-          reasoning: { enabled: true },
+          max_tokens: 1000,
+          temperature: 0.7,
         }),
       }
     );
 
     const data = await response.json();
+
+    if (!data.choices || !data.choices[0]) {
+      console.error("OpenRouter API error in submitAnswers:", JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || "Invalid response from LLM");
+    }
+
     const output = data.choices[0].message.content;
 
     // Simple parsing
@@ -153,8 +162,8 @@ Feedback: short paragraph
       feedback,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error("Error in submitAnswers:", err);
+    res.status(500).json({ message: "Failed to evaluate interview answers. Please try again." });
   }
 };
 export const getInterviewHistory = async (req, res) => {
