@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-// import { protect } from "./middlewares/authMiddleware.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import interviewRoutes from "./routes/interviewRoutes.js";
 import cors from "cors";
@@ -21,11 +20,10 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use("/api/auth", authRoutes);
-
 connectDB();
 
+app.use(express.json());
+app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interview", interviewRoutes);
 
