@@ -15,7 +15,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: [
+      "http://localhost:8080",
+      "https://prep-wise-delta-seven.vercel.app",
+    ],
     credentials: true,
   })
 );
